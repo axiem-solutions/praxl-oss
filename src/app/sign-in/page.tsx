@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function SignInPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -100,13 +97,6 @@ export default function SignInPage() {
             {loading ? <Loader2 className="size-4 animate-spin" /> : "Sign in"}
           </button>
         </form>
-
-        <p className="text-sm text-muted-foreground">
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="text-primary hover:underline font-medium">
-            Sign up
-          </Link>
-        </p>
       </div>
     </div>
   );

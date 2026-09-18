@@ -5,7 +5,18 @@ import { eq } from "drizzle-orm";
 import { hashPassword, createToken, COOKIE_NAME, isSecureContext } from "@/lib/auth";
 import { v4 as uuid } from "uuid";
 
+function isPublicSignupEnabled(): boolean {
+  return process.env.ALLOW_PUBLIC_SIGNUP === "true";
+}
+
 export async function POST(request: NextRequest) {
+  if (!isPublicSignupEnabled()) {
+    return NextResponse.json(
+      { error: "Account creation is disabled. Ask an admin for access." },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { name, email, password } = body as { name?: string; email?: string; password?: string };
