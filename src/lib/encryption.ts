@@ -40,3 +40,9 @@ export function isEncrypted(value: string): boolean {
   // Encrypted values have format: 24hex:32hex:hex
   return /^[0-9a-f]{24}:[0-9a-f]{32}:[0-9a-f]+$/.test(value);
 }
+
+/** Read a stored secret setting: decrypts values saved by settings.set, passes legacy plaintext through. */
+export function readStoredSecret(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return isEncrypted(value) ? decrypt(value) : value;
+}

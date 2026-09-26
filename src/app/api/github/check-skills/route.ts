@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { appSettings } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import { readStoredSecret } from "@/lib/encryption";
 
 // Check which skills exist in the user's GitHub repo
 export async function GET() {
@@ -22,7 +23,7 @@ export async function GET() {
     const patSetting = await db.query.appSettings.findFirst({
       where: and(eq(appSettings.key, "github_pat"), eq(appSettings.userId, userId)),
     });
-    const ghToken = patSetting?.value || null;
+    const ghToken = readStoredSecret(patSetting?.value);
 
     if (!ghToken) return NextResponse.json({ slugs: [], connected: false, error: "No GitHub token" });
 

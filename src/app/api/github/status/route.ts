@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { appSettings } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import { readStoredSecret } from "@/lib/encryption";
 
 export async function GET() {
   try {
@@ -19,7 +20,7 @@ export async function GET() {
       return NextResponse.json({ connected: false, error: "GitHub not connected. Add a Personal Access Token in Settings." });
     }
 
-    const ghToken = patSetting.value;
+    const ghToken = readStoredSecret(patSetting.value);
 
     // Verify token works by fetching GitHub user
     const ghRes = await fetch("https://api.github.com/user", {
