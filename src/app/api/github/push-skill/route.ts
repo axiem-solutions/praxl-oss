@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { skills, skillFiles, appSettings } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
+import { readStoredSecret } from "@/lib/encryption";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
     const patSetting = await db.query.appSettings.findFirst({
       where: and(eq(appSettings.key, "github_pat"), eq(appSettings.userId, userId)),
     });
-    const ghToken = patSetting?.value || null;
+    const ghToken = readStoredSecret(patSetting?.value);
 
     if (!ghToken) {
       return NextResponse.json({ error: "No GitHub token. Add a Personal Access Token in Settings." }, { status: 400 });
