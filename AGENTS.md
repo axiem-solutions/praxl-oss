@@ -34,3 +34,7 @@ two secrets: `PRAXL_TOKEN` and `COMPOSIO_API_KEY`.
 | Cursor background agents | `.cursor/environment.json` `install` | Cursor Settings → Background Agents → Secrets |
 | Codex cloud | Environment setup script: `bash scripts/agent-setup.sh` | Codex environment secrets |
 <!-- axiem-ai-standard:end -->
+
+## Bucket
+
+**Bucket: shared.** Works across personal, grotto and axiem. No project key of its own: agents use the Composio MCP connections (aliases `personal-*`, `grotto-*`, `axiem-*`, `shared-*`); a script that needs Composio uses the key of the bucket it touches.
